@@ -88,8 +88,8 @@ body {
     --shadow-dark-200: 2px 0px 20px 0px rgba(39, 36, 36, 0.04);
 
     /* Background Images */
-    --bg-auth-dark: url("/images/auth-dark.png");
-    --bg-auth-light: url("/images/auth-light.png");
+    --background-image-auth-dark: url("/images/auth-dark.png");
+    --background-image-auth-light: url("/images/auth-light.png");
 
     /* Screens */
     --breakpoint-xs: 420px;
@@ -609,10 +609,10 @@ code {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
 }
