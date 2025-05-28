@@ -1,3 +1,4 @@
+import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
@@ -39,11 +40,17 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-    const { query = "" } = await searchParams;
+    const { query = "", filter = "" } = await searchParams;
 
-    const filteredQuestions = questions.filter((question) =>
-        question.title.toLowerCase().includes(query?.toLowerCase())
-    );
+    const filteredQuestions = questions.filter((question) => {
+        const matchesQuery = question.title
+            .toLowerCase()
+            .includes(query.toLowerCase());
+        const matchesFilter = filter
+            ? question.tags[0].name.toLowerCase() === filter.toLowerCase()
+            : true;
+        return matchesQuery && matchesFilter;
+    });
 
     return (
         <>
@@ -57,6 +64,7 @@ const Home = async ({ searchParams }: SearchParams) => {
                     <Link href={ROUTES.ASK_QUESTION}>Ask a Question</Link>
                 </Button>
             </section>
+
             <section className="mt-11">
                 <LocalSearch
                     route="/"
@@ -65,7 +73,9 @@ const Home = async ({ searchParams }: SearchParams) => {
                     otherClasses="flex-1"
                 />
             </section>
-            {/* HomeFilte */}
+
+            <HomeFilter />
+
             <div className="mt-10 flex w-full flex-col gap-6">
                 {filteredQuestions.map((question) => (
                     <h1 key={question._id}>{question.title}</h1>
