@@ -87,7 +87,7 @@ const Editor = ({ editorRef, value, fieldChange, ...props }: Props) => {
                             options={[
                                 {
                                     when: (editor) =>
-                                        editor?.editorType === "codebolck",
+                                        editor?.editorType === "codeblock",
                                     contents: () => (
                                         <ChangeCodeMirrorLanguage />
                                     ),
@@ -110,8 +110,8 @@ const Editor = ({ editorRef, value, fieldChange, ...props }: Props) => {
 
                                             <InsertTable />
                                             <InsertThematicBreak />
-
                                             <Separator />
+
                                             <InsertCodeBlock />
                                         </>
                                     ),
