@@ -33,7 +33,7 @@ const dbConnect = async (): Promise<Mongoose> => {
                 dbName: "devflow",
             })
             .then((result) => {
-                console.log("Connected to MongoDB");
+                console.log("Connected to MongoDB!");
                 return result;
             })
             .catch((error) => {
