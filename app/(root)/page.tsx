@@ -3,6 +3,9 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import handleError from "@/lib/handlers/error";
+import { ValidationError } from "@/lib/http-errors";
+import dbConnect from "@/lib/mongoose";
 import Link from "next/link";
 
 const questions = [
@@ -44,11 +47,21 @@ const questions = [
     },
 ];
 
+const test = async () => {
+    try {
+        await dbConnect();
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
 interface SearchParams {
     searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
+    await test();
+
     const { query = "", filter = "" } = await searchParams;
 
     const filteredQuestions = questions.filter((question) => {
