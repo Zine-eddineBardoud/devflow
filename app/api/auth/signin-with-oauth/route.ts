@@ -1,3 +1,7 @@
+import mongoose from "mongoose";
+import { NextResponse } from "next/server";
+import slugify from "slugify";
+
 import Account from "@/database/account.model";
 import User from "@/database/user.model";
 import handleError from "@/lib/handlers/error";
@@ -5,11 +9,8 @@ import { ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
 import { SignInWithOAuthSchema } from "@/lib/validations";
 import { APIErrorResponse } from "@/types/global";
-import mongoose from "mongoose";
-import { NextRequest } from "next/server";
-import slugify from "slugify";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
     const { provider, providerAccountId, user } = await request.json();
 
     await dbConnect();
@@ -31,23 +32,17 @@ export async function POST(request: NextRequest) {
 
         const { name, username, email, image } = user;
 
-        const slugfiedUsername = slugify(username, {
+        const slugifiedUsername = slugify(username, {
             lower: true,
             strict: true,
             trim: true,
         });
 
         let existingUser = await User.findOne({ email }).session(session);
+
         if (!existingUser) {
             [existingUser] = await User.create(
-                [
-                    {
-                        name,
-                        username: slugfiedUsername,
-                        email,
-                        image,
-                    },
-                ],
+                [{ name, username: slugifiedUsername, email, image }],
                 { session }
             );
         } else {
@@ -86,6 +81,8 @@ export async function POST(request: NextRequest) {
         }
 
         await session.commitTransaction();
+
+        return NextResponse.json({ success: true });
     } catch (error: unknown) {
         await session.abortTransaction();
         return handleError(error, "api") as APIErrorResponse;
