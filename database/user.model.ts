@@ -20,13 +20,13 @@ const UserSchema = new Schema<IUser>(
         email: { type: String, required: true, unique: true },
         bio: { type: String },
         image: { type: String },
-        location: { types: String },
-        portfolio: { types: String },
-        reputation: { types: Number },
+        location: { type: String },
+        portfolio: { type: String },
+        reputation: { type: Number },
     },
     { timestamps: true }
 );
 
-const User = models?.user || model<IUser>("User", UserSchema);
+const User = models?.User || model<IUser>("User", UserSchema);
 
 export default User;
