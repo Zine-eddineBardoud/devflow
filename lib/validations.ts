@@ -128,11 +128,9 @@ export const SignInWithOAuthSchema = z.object({
         .min(1, { message: "Provider account ID is required." }),
     user: z.object({
         name: z.string().min(1, { message: "Name is required." }),
-        username: z
-            .string()
-            .min(3, {
-                message: "Username must be at least 3 characters long.",
-            }),
+        username: z.string().min(3, {
+            message: "Username must be at least 3 characters long.",
+        }),
         email: z
             .string()
             .email({ message: "Please provide a valid email address." }),
@@ -141,4 +139,12 @@ export const SignInWithOAuthSchema = z.object({
             .url({ message: "Please provide a valid image URL." })
             .optional(),
     }),
+});
+
+export const EditQuestionSchema = AskQuestionSchema.extend({
+    questionId: z.string().min(1, { message: "Question ID is required." }),
+});
+
+export const GetQuestionSchema = z.object({
+    questionId: z.string().min(1, { message: "Question ID is required." }),
 });
